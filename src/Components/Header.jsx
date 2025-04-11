@@ -6,13 +6,13 @@ const Header = () => {
       <nav>
         <ul className="m-3">
           <li>
-            <Link to="/home">Home</Link>
+            <Link to="/home">HOME</Link>
           </li>
           <li>
-            <Link to="/add-task">Nuova Task</Link>
+            <Link to="/task-list">YOUR TASKS</Link>
           </li>
           <li>
-            <Link to="/task-list">Le tue task</Link>
+            <Link to="/add-task">NEW TASK</Link>
           </li>
         </ul>
       </nav>
