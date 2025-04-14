@@ -30,6 +30,7 @@ const TaskDetail = () => {
 
   const handleRemoveTask = () => {
     removeTask(task.id);
+    alert("Task eliminata con successo!");
     navigate("/task-list");
   };
 

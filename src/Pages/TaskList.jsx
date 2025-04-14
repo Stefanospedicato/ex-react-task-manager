@@ -1,11 +1,12 @@
 import { useGlobalContext } from "../Context/GlobalContext";
 import TaskRow from "../Components/TaskRow";
+import { Link } from "react-router-dom";
 
 const TaskList = () => {
   const { tasks } = useGlobalContext();
 
   return (
-    <div className="container mt-5">
+    <div className="container mt-5 new-task p-5 mb-5">
       <h1 className="text-center table-title bold">TASK LIST</h1>
       <table className="table text-center border mt-5">
         <thead>
@@ -27,6 +28,11 @@ const TaskList = () => {
           ))}
         </tbody>
       </table>
+      <div className="d-flex justify-content-center mt-5">
+        <Link to="/add-task">
+          <button className="btn btn-success ">AGGIUNGI UNA NUOVA TASK</button>
+        </Link>
+      </div>
     </div>
   );
 };
