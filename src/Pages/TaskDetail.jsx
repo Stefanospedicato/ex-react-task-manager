@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 import { useGlobalContext } from "../Context/GlobalContext";
+import Modal from "../Components/Modal";
 
 const TaskDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { tasks, removeTask } = useGlobalContext();
+  const [showModal, setShowModal] = useState(false);
   const task = tasks.find((t) => t.id === parseInt(id));
 
   const getStatusClass = (status) => {
@@ -30,7 +32,6 @@ const TaskDetail = () => {
 
   const handleRemoveTask = () => {
     removeTask(task.id);
-    alert("Task eliminata con successo!");
     navigate("/task-list");
   };
 
@@ -51,10 +52,22 @@ const TaskDetail = () => {
           <h5>DATA DI CREAZIONE:</h5>{" "}
           {dayjs(createdAt).format("dddd, MMMM D, YYYY h:mm A")}
         </div>
-        <button className="btn btn-danger w-100" onClick={handleRemoveTask}>
+        <button
+          className="btn btn-danger w-100"
+          onClick={() => setShowModal(true)}
+        >
           ELIMINA TASK
         </button>
       </div>
+
+      <Modal
+        title="Conferma Eliminazione"
+        content="Sei sicuro di voler eliminare questa task? L'operazione è irreversibile."
+        show={showModal}
+        onClose={() => setShowModal(false)}
+        onConfirm={handleRemoveTask}
+        confirmText="Elimina"
+      />
     </div>
   );
 };

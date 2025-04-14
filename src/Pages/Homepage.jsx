@@ -2,7 +2,7 @@ import React from "react";
 
 const Homepage = () => {
   return (
-    <div className="container my-5 new-task p-5 mb-5 text-white">
+    <div className="container my-5 new-task p-5 mb-5 text-white uppercase">
       <h1 className="text-center mt-3 mb-5">
         Benvenuto nella tua App per la gestione dei Task!
       </h1>

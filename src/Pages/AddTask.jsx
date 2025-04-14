@@ -1,4 +1,5 @@
 import { useState, useRef } from "react";
+import { useNavigate } from "react-router-dom"; // Import corretto
 import useTasks from "../useTasks";
 
 const AddTask = () => {
@@ -12,6 +13,7 @@ const AddTask = () => {
   const descRef = useRef();
   const statusRef = useRef();
   const { addTask } = useTasks();
+  const navigate = useNavigate(); // Assicurati che sia definito correttamente
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -44,6 +46,7 @@ const AddTask = () => {
       setFormData(initialFormData);
       descRef.current.value = "";
       statusRef.current.value = "";
+      navigate("/task-list"); // Naviga alla lista delle task
     } catch (error) {
       alert(`Errore: ${error.message}`);
     }
