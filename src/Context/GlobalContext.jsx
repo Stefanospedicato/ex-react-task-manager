@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect } from "react";
+import useTasks from "../useTasks";
 
 const GlobalContext = createContext();
 const VITE_API_URL = import.meta.env.VITE_API_URL || "http://localhost:3001";
@@ -26,6 +27,7 @@ const GlobalProvider = ({ children }) => {
     tasks,
     setTasks,
     fetchTasks,
+    useTasks,
   };
 
   return (
