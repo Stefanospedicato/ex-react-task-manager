@@ -18,3 +18,18 @@ header ul {
   }
 }
 
+.new-task{
+  border: 2px solid lightgray;
+  border-radius: 20px;
+
+  input, textarea, select{
+    border-radius: 10px;
+    border: 1px solid lightgray;
+  }
+
+  h1, h5{
+    color: #6baced;
+    font-weight: bolder;
+  }
+}
+
