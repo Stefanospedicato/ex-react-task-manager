@@ -39,7 +39,26 @@ const useTasks = (initialTasks = []) => {
     }
   }
 
-  function removeTask() {}
+  function removeTask(taskId) {
+    axios
+      .delete(VITE_API_URL + "/tasks/" + taskId)
+      .then((response) => {
+        if (response.data.success) {
+          setTasks((prevTasks) =>
+            prevTasks.filter((task) => task.id !== taskId)
+          );
+          console.log("Task rimossa:", taskId);
+        } else {
+          console.error(
+            "Errore durante la rimozione della task:",
+            response.data.message
+          );
+        }
+      })
+      .catch((error) => {
+        console.error("Errore durante la rimozione della task:", error.message);
+      });
+  }
 
   function updateTask() {}
 
