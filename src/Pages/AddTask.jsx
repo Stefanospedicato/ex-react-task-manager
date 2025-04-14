@@ -1,17 +1,19 @@
 import { useState, useRef } from "react";
+import useTasks from "../useTasks";
 
 const AddTask = () => {
   const initialFormData = {
     title: "",
   };
 
-  const symbols = "!@#$%^&*()-_=+[]{}|;:'\\\",.<>?/`~";
+  const symbols = '!@#$%^&*()-_=+[]{}|;:\\",.<>?/`~';
   const [formData, setFormData] = useState(initialFormData);
   const [errorMessage, setErrorMessage] = useState("");
   const descRef = useRef();
   const statusRef = useRef();
+  const { addTask } = useTasks();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const { title } = formData;
 
@@ -36,7 +38,15 @@ const AddTask = () => {
       status,
     };
 
-    console.log("Nuova task:", newTask);
+    try {
+      await addTask(newTask);
+      alert("Task creata con successo!");
+      setFormData(initialFormData);
+      descRef.current.value = "";
+      statusRef.current.value = "";
+    } catch (error) {
+      alert(`Errore: ${error.message}`);
+    }
   };
 
   const handleChange = (e) => {
@@ -67,7 +77,7 @@ const AddTask = () => {
             <p>{errorMessage}</p>
           </div>
         )}
-        <div className="my-3">
+        <div className="my-3 flex">
           <h5>Descrizione della Task</h5>
           <textarea
             placeholder="Scrivi la descrizione della task..."
