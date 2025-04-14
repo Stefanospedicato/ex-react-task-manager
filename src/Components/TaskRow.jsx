@@ -1,8 +1,9 @@
 import dayjs from "dayjs";
 import React from "react";
+import { Link } from "react-router-dom";
 
 const TaskRow = React.memo(({ task }) => {
-  const { title, status, createdAt } = task;
+  const { id, title, status, createdAt } = task;
 
   const getStatusClass = (status) => {
     switch (status) {
@@ -19,7 +20,9 @@ const TaskRow = React.memo(({ task }) => {
 
   return (
     <tr>
-      <td>{title}</td>
+      <td>
+        <Link to={`task/${id}`}>{title}</Link>
+      </td>
       <td className={getStatusClass(status)}>{status}</td>
       <td>{dayjs(createdAt).format("dddd, MMMM D, YYYY h:mm A")}</td>
     </tr>

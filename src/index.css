@@ -1,3 +1,4 @@
+
 header {
   background-color: #6baced;
   padding: 10px 20px;
@@ -21,7 +22,7 @@ header ul {
 .new-task{
   border: 2px solid lightgray;
   border-radius: 20px;
-
+  background-color: black;
   input, textarea, select{
     border-radius: 10px;
     border: 1px solid lightgray;
@@ -33,3 +34,45 @@ header ul {
   }
 }
 
+.detail-task{
+  border: 2px solid lightgray;
+  border-radius: 20px;
+  padding:20px;
+  background-color: black;
+  color: white;
+  h1{
+    color: #6baced;
+    font-weight: bolder;
+  }
+  h5{
+    color: #6baced;
+    font-weight: bolder;
+  }
+}
+
+.table-title{
+  color: #6baced !important
+}
+
+table{
+  a, tr {
+    text-decoration: none;
+    text-transform: uppercase;
+    color: black;
+    font-weight: 400;
+  }
+}
+
+.home{
+  height: 100vh;
+  color: white;
+  background-color: black;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-transform: uppercase;
+  h1{
+    color: #6baced;
+  }
+}
