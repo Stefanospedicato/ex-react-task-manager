@@ -60,7 +60,30 @@ const useTasks = (initialTasks = []) => {
       });
   }
 
-  function updateTask() {}
+  function updateTask(updatedTask = {}) {
+    axios
+      .put(VITE_API_URL + "/tasks/" + updatedTask.id, updatedTask)
+      .then((response) => {
+        if (response.data.success) {
+          setTasks((prevTasks) =>
+            prevTasks.map((task) =>
+              task.id === updatedTask.id ? response.data.task : task
+            )
+          );
+          console.log("Task aggiornata:", response.data.task);
+        } else {
+          throw new Error(
+            response.data.message || "Errore durante l'aggiornamento della task"
+          );
+        }
+      })
+      .catch((error) => {
+        console.error(
+          "Errore durante l'aggiornamento della task:",
+          error.message
+        );
+      });
+  }
 
   return { fetchTasks, tasks, addTask, removeTask, updateTask };
 };
