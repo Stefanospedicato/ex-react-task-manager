@@ -116,3 +116,14 @@ table {
   justify-content: flex-end;
   gap: 10px;
 }
+
+th {
+  cursor: pointer;
+  user-select: none;
+}
+
+.table-title.active {
+  font-weight: bold;
+  text-decoration: underline;
+  cursor: pointer;
+}
