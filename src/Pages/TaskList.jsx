@@ -1,12 +1,15 @@
 import { useGlobalContext } from "../Context/GlobalContext";
 import TaskRow from "../Components/TaskRow";
 import { Link } from "react-router-dom";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useCallback } from "react";
 
 const TaskList = () => {
   const { tasks } = useGlobalContext();
   const [sortOrder, setSortOrder] = useState(1);
   const [sortBy, setSortBy] = useState("createdAt");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [debouncedQuery, setDebouncedQuery] = useState("");
+
   const handleSort = (column) => {
     if (sortBy === column) {
       setSortOrder((prevOrder) => -prevOrder);
@@ -16,10 +19,25 @@ const TaskList = () => {
     }
   };
 
-  const sortedTasks = useMemo(() => {
-    const orderMultiplier = sortOrder;
+  const debounceSearch = useCallback((query) => {
+    const handler = setTimeout(() => {
+      setDebouncedQuery(query);
+    }, 300);
+    return () => clearTimeout(handler);
+  }, []);
 
-    return [...tasks].sort((a, b) => {
+  const handleSearchChange = (e) => {
+    const query = e.target.value;
+    setSearchQuery(query);
+    debounceSearch(query);
+  };
+
+  const filteredAndSortedTasks = useMemo(() => {
+    const orderMultiplier = sortOrder;
+    const filteredTasks = tasks.filter((task) =>
+      task.title.toLowerCase().includes(debouncedQuery.toLowerCase())
+    );
+    return filteredTasks.sort((a, b) => {
       if (sortBy === "title") {
         return a.title.localeCompare(b.title) * orderMultiplier;
       } else if (sortBy === "status") {
@@ -35,11 +53,20 @@ const TaskList = () => {
       }
       return 0;
     });
-  }, [tasks, sortBy, sortOrder]);
+  }, [tasks, sortBy, sortOrder, debouncedQuery]);
 
   return (
     <div className="container mt-5 new-task p-5 mb-5 uppercase">
       <h1 className="text-center table-title bold">TASK LIST</h1>
+      <div className="mb-4">
+        <input
+          type="text"
+          className="form-control"
+          placeholder="Cerca per nome..."
+          value={searchQuery}
+          onChange={handleSearchChange}
+        />
+      </div>
       <table className="table text-center border mt-5">
         <thead>
           <tr>
@@ -73,7 +100,7 @@ const TaskList = () => {
           </tr>
         </thead>
         <tbody>
-          {sortedTasks.map((task) => (
+          {filteredAndSortedTasks.map((task) => (
             <TaskRow key={task.id} task={task} />
           ))}
         </tbody>

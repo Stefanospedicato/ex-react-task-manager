@@ -1,21 +1,22 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
 
 const VITE_API_URL = import.meta.env.VITE_API_URL || "http://localhost:3001";
 
 const useTasks = (initialTasks = []) => {
   const [tasks, setTasks] = useState(initialTasks);
 
-  function fetchTasks() {
-    axios
-      .get(VITE_API_URL + "/tasks")
-      .then((response) => {
-        setTasks(response.data);
-        console.log(response.data);
-      })
-      .catch((error) => {
-        console.error("Errore nel recupero delle task:", error.message);
-      });
+  async function fetchTasks() {
+    try {
+      const response = await fetch(VITE_API_URL + "/tasks");
+      if (!response.ok) {
+        throw new Error("Errore nel recupero delle task");
+      }
+      const data = await response.json();
+      setTasks(data);
+      console.log(data);
+    } catch (error) {
+      console.error("Errore nel recupero delle task:", error.message);
+    }
   }
 
   useEffect(() => {
@@ -24,14 +25,22 @@ const useTasks = (initialTasks = []) => {
 
   async function addTask(defaultObj) {
     try {
-      const response = await axios.post(VITE_API_URL + "/tasks", defaultObj);
+      const response = await fetch(VITE_API_URL + "/tasks", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(defaultObj),
+      });
 
-      if (response.data.success) {
-        setTasks((prevTasks) => [...prevTasks, response.data.task]);
-        console.log("Nuova task aggiunta:", response.data.task);
+      const data = await response.json();
+
+      if (data.success) {
+        setTasks((prevTasks) => [...prevTasks, data.task]);
+        console.log("Nuova task aggiunta:", data.task);
       } else {
         throw new Error(
-          response.data.message || "Errore sconosciuto nell'aggiunta della task"
+          data.message || "Errore sconosciuto nell'aggiunta della task"
         );
       }
     } catch (error) {
@@ -39,50 +48,55 @@ const useTasks = (initialTasks = []) => {
     }
   }
 
-  function removeTask(taskId) {
-    axios
-      .delete(VITE_API_URL + "/tasks/" + taskId)
-      .then((response) => {
-        if (response.data.success) {
-          setTasks((prevTasks) =>
-            prevTasks.filter((task) => task.id !== taskId)
-          );
-          console.log("Task rimossa:", taskId);
-        } else {
-          console.error(
-            "Errore durante la rimozione della task:",
-            response.data.message
-          );
-        }
-      })
-      .catch((error) => {
-        console.error("Errore durante la rimozione della task:", error.message);
+  async function removeTask(taskId) {
+    try {
+      const response = await fetch(VITE_API_URL + "/tasks/" + taskId, {
+        method: "DELETE",
       });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId));
+        console.log("Task rimossa:", taskId);
+      } else {
+        console.error("Errore durante la rimozione della task:", data.message);
+      }
+    } catch (error) {
+      console.error("Errore durante la rimozione della task:", error.message);
+    }
   }
 
-  function updateTask(updatedTask = {}) {
-    axios
-      .put(VITE_API_URL + "/tasks/" + updatedTask.id, updatedTask)
-      .then((response) => {
-        if (response.data.success) {
-          setTasks((prevTasks) =>
-            prevTasks.map((task) =>
-              task.id === updatedTask.id ? response.data.task : task
-            )
-          );
-          console.log("Task aggiornata:", response.data.task);
-        } else {
-          throw new Error(
-            response.data.message || "Errore durante l'aggiornamento della task"
-          );
-        }
-      })
-      .catch((error) => {
-        console.error(
-          "Errore durante l'aggiornamento della task:",
-          error.message
-        );
+  async function updateTask(updatedTask = {}) {
+    try {
+      const response = await fetch(VITE_API_URL + "/tasks/" + updatedTask.id, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedTask),
       });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setTasks((prevTasks) =>
+          prevTasks.map((task) =>
+            task.id === updatedTask.id ? data.task : task
+          )
+        );
+        console.log("Task aggiornata:", data.task);
+      } else {
+        throw new Error(
+          data.message || "Errore durante l'aggiornamento della task"
+        );
+      }
+    } catch (error) {
+      console.error(
+        "Errore durante l'aggiornamento della task:",
+        error.message
+      );
+    }
   }
 
   return { fetchTasks, tasks, addTask, removeTask, updateTask };
