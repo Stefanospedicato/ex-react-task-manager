@@ -24,7 +24,7 @@ const TaskRow = React.memo(({ task }) => {
         <Link to={`task/${id}`}>{title}</Link>
       </td>
       <td className={getStatusClass(status)}>{status}</td>
-      <td>{dayjs(createdAt).format("dddd, MMMM D, YYYY h:mm A")}</td>
+      <td>{dayjs(createdAt).format("DD/MM/YYYY")}</td>
     </tr>
   );
 });

@@ -61,8 +61,7 @@ const TaskDetail = () => {
           <h5>STATO:</h5> {status}
         </div>
         <div className="p-3">
-          <h5>DATA DI CREAZIONE:</h5>{" "}
-          {dayjs(createdAt).format("dddd, MMMM D, YYYY h:mm A")}
+          <h5>DATA DI CREAZIONE:</h5> {dayjs(createdAt).format("DD/MM/YYYY")}
         </div>
         <button
           className="btn btn-primary w-100 mb-3"

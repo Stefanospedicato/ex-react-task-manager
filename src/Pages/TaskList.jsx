@@ -19,7 +19,7 @@ const TaskList = () => {
     }
   };
 
-  const debounceSearch = useCallback((query) => {
+  const debounce = useCallback((query) => {
     const handler = setTimeout(() => {
       setDebouncedQuery(query);
     }, 300);
@@ -29,26 +29,23 @@ const TaskList = () => {
   const handleSearchChange = (e) => {
     const query = e.target.value;
     setSearchQuery(query);
-    debounceSearch(query);
+    debounce(query);
   };
 
   const filteredAndSortedTasks = useMemo(() => {
-    const orderMultiplier = sortOrder;
     const filteredTasks = tasks.filter((task) =>
       task.title.toLowerCase().includes(debouncedQuery.toLowerCase())
     );
     return filteredTasks.sort((a, b) => {
       if (sortBy === "title") {
-        return a.title.localeCompare(b.title) * orderMultiplier;
+        return a.title.localeCompare(b.title) * sortOrder;
       } else if (sortBy === "status") {
         const statusOrder = { "To do": 1, Doing: 2, Done: 3 };
-        return (
-          (statusOrder[a.status] - statusOrder[b.status]) * orderMultiplier
-        );
+        return (statusOrder[a.status] - statusOrder[b.status]) * sortOrder;
       } else if (sortBy === "createdAt") {
         return (
           (new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()) *
-          orderMultiplier
+          sortOrder
         );
       }
       return 0;
