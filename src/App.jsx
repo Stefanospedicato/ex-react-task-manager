@@ -13,7 +13,7 @@ const App = () => {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<DefaultLayout />}>
-            <Route path="/home" element={<Homepage />} />
+            <Route path="/" element={<Homepage />} />
             <Route path="/add-task" element={<AddTask />} />
             <Route path="/task-list" element={<TaskList />} />
             <Route path="/task-list/task/:id" element={<TaskDetail />} />
