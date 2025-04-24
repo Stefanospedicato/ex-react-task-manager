@@ -10,6 +10,16 @@ const TaskList = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedQuery, setDebouncedQuery] = useState("");
 
+  function debounce(func, delay) {
+    let timer;
+    return (value) => {
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        func(value);
+      }, delay);
+    };
+  }
+
   const handleSort = (column) => {
     if (sortBy === column) {
       setSortOrder((prevOrder) => -prevOrder);
@@ -19,17 +29,17 @@ const TaskList = () => {
     }
   };
 
-  const debounce = useCallback((query) => {
-    const handler = setTimeout(() => {
+  const handleSearch = useCallback(
+    debounce((query) => {
       setDebouncedQuery(query);
-    }, 300);
-    return () => clearTimeout(handler);
-  }, []);
+    }, 300),
+    []
+  );
 
   const handleSearchChange = (e) => {
     const query = e.target.value;
     setSearchQuery(query);
-    debounce(query);
+    handleSearch(query);
   };
 
   const filteredAndSortedTasks = useMemo(() => {
