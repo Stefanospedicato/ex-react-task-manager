@@ -50,8 +50,10 @@ const TaskList = () => {
       if (sortBy === "title") {
         return a.title.localeCompare(b.title) * sortOrder;
       } else if (sortBy === "status") {
-        const statusOrder = { "To do": 1, Doing: 2, Done: 3 };
-        return (statusOrder[a.status] - statusOrder[b.status]) * sortOrder;
+        const status = ["To do", "Doing", "Done"];
+        return (
+          (status.indexOf(a.status) - status.indexOf(b.status)) * sortOrder
+        );
       } else if (sortBy === "createdAt") {
         return (
           (new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()) *
@@ -82,7 +84,6 @@ const TaskList = () => {
               className={`col-4 table-title ${
                 sortBy === "title" ? "active" : ""
               }`}
-              scope="col"
             >
               NOME
             </th>
@@ -91,7 +92,6 @@ const TaskList = () => {
               className={`col-4 table-title ${
                 sortBy === "status" ? "active" : ""
               }`}
-              scope="col"
             >
               STATO
             </th>
@@ -100,7 +100,6 @@ const TaskList = () => {
               className={`col-4 table-title ${
                 sortBy === "createdAt" ? "active" : ""
               }`}
-              scope="col"
             >
               DATA DI CREAZIONE
             </th>
