@@ -48,15 +48,15 @@ const useTasks = (initialTasks = []) => {
       const response = await fetch(VITE_API_URL + "/tasks/" + taskId, {
         method: "DELETE",
       });
-
       const data = await response.json();
 
-      if (data.success) {
-        setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId));
-        console.log("Task rimossa:", taskId);
-      } else {
-        console.error("Errore durante la rimozione della task:", data.message);
-      }
+      const { success, message } = data;
+
+      if (!success)
+        throw new Error("Errore durante la rimozione della task:", message);
+
+      setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId));
+      console.log("Task rimossa:", taskId);
     } catch (error) {
       console.error("Errore durante la rimozione della task:", error.message);
     }
@@ -73,19 +73,14 @@ const useTasks = (initialTasks = []) => {
       });
 
       const data = await response.json();
+      const { success, task, message } = data;
 
-      if (data.success) {
-        setTasks((prevTasks) =>
-          prevTasks.map((task) =>
-            task.id === updatedTask.id ? data.task : task
-          )
-        );
-        console.log("Task aggiornata:", data.task);
-      } else {
-        throw new Error(
-          data.message || "Errore durante l'aggiornamento della task"
-        );
-      }
+      if (!success)
+        throw new Error(message || "Errore durante l'aggiornamento della task");
+      setTasks((prevTasks) =>
+        prevTasks.map((task) => (task.id === updatedTask.id ? data.task : task))
+      );
+      console.log("Task aggiornata:", task);
     } catch (error) {
       console.error(
         "Errore durante l'aggiornamento della task:",
