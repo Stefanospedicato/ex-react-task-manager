@@ -23,26 +23,21 @@ const useTasks = (initialTasks = []) => {
     fetchTasks();
   }, []);
 
-  async function addTask(defaultObj) {
+  async function addTask(newTask) {
     try {
       const response = await fetch(VITE_API_URL + "/tasks", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(defaultObj),
+        body: JSON.stringify(newTask),
       });
 
-      const data = await response.json();
+      const { success, message, task } = await response.json();
 
-      if (data.success) {
-        setTasks((prevTasks) => [...prevTasks, data.task]);
-        console.log("Nuova task aggiunta:", data.task);
-      } else {
-        throw new Error(
-          data.message || "Errore sconosciuto nell'aggiunta della task"
-        );
-      }
+      if (!success) throw new Error(message);
+
+      setTasks((prev) => [...prev, task]);
     } catch (error) {
       console.error("Errore durante l'aggiunta della task:", error.message);
     }

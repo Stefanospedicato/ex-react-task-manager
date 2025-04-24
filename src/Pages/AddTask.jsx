@@ -1,19 +1,13 @@
 import { useState, useRef } from "react";
-import { useNavigate } from "react-router-dom";
-import useTasks from "../hook/useTasks";
+import useTasks from "../Hooks/useTasks";
 
 const AddTask = () => {
-  const initialFormData = {
-    title: "",
-  };
-
   const symbols = '!@#$%^&*()-_=+[]{}|;:\\",.<>?/`~';
-  const [formData, setFormData] = useState(initialFormData);
+  const [formData, setFormData] = useState({ title: "" });
   const [errorMessage, setErrorMessage] = useState("");
   const descRef = useRef();
   const statusRef = useRef();
-  const { addTask, fetchTasks } = useTasks();
-  const navigate = useNavigate();
+  const { addTask } = useTasks();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -23,7 +17,6 @@ const AddTask = () => {
       setErrorMessage("Il campo Nome non può essere vuoto.");
       return;
     }
-
     if ([...symbols].some((symbol) => title.includes(symbol))) {
       setErrorMessage("Il campo Nome non può contenere simboli speciali.");
       return;
@@ -42,12 +35,10 @@ const AddTask = () => {
 
     try {
       await addTask(newTask);
-      await fetchTasks();
       alert("Task creata con successo!");
-      setFormData(initialFormData);
+      setFormData({ title: "" });
       descRef.current.value = "";
       statusRef.current.value = "";
-      navigate("/task-list"); // Naviga alla lista delle task
     } catch (error) {
       alert(`Errore: ${error.message}`);
     }
