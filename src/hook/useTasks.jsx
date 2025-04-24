@@ -8,7 +8,7 @@ const useTasks = (initialTasks = []) => {
   async function fetchTasks() {
     try {
       const response = await fetch(VITE_API_URL + "/tasks");
-      if (!response.ok) {
+      if (!response) {
         throw new Error("Errore nel recupero delle task");
       }
       const data = await response.json();

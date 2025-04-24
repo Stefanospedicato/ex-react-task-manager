@@ -8,11 +8,11 @@ const TaskRow = React.memo(({ task }) => {
   const getStatusClass = (status) => {
     switch (status) {
       case "To do":
-        return "table-danger";
+        return "bg-red";
       case "Doing":
-        return "table-warning";
+        return "bg-yellow";
       case "Done":
-        return "table-success";
+        return "bg-green";
       default:
         return "";
     }

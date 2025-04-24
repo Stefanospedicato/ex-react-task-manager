@@ -112,8 +112,10 @@ const TaskList = () => {
         </tbody>
       </table>
       <div className="d-flex justify-content-center mt-5">
-        <Link to="/add-task">
-          <button className="btn btn-success">AGGIUNGI UNA NUOVA TASK</button>
+        <Link className="w-100" to="/add-task">
+          <button className="btn btn-success w-100">
+            AGGIUNGI UNA NUOVA TASK
+          </button>
         </Link>
       </div>
     </div>

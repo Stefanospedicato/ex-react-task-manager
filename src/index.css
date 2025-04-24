@@ -132,3 +132,16 @@ th {
   text-decoration: underline;
   cursor: pointer;
 }
+
+.bg-red {
+  background-color: #ea7979d1 !important;
+  color: white !important;
+}
+.bg-yellow {
+  background-color: rgb(241, 210, 108) !important;
+  color: white !important;
+}
+.bg-green {
+  background-color: rgb(179, 237, 144) !important;
+  color: white !important;
+}

@@ -11,9 +11,6 @@ const Homepage = () => {
           In questa applicazione puoi creare, modificare e gestire i tuoi task
           in modo semplice e veloce.
         </p>
-        <p className="text-center">
-          Inizia a organizzare le tue attività e a rimanere produttivo!
-        </p>
       </div>
     </div>
   );
