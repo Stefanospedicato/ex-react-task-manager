@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import useTasks from "../Hooks/useTasks";
+import { useGlobalContext } from "../Context/GlobalContext";
 
 const AddTask = () => {
   const symbols = '!@#$%^&*()-_=+[]{}|;:\\",.<>?/`~';
@@ -7,7 +7,7 @@ const AddTask = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const descRef = useRef();
   const statusRef = useRef();
-  const { addTask } = useTasks();
+  const { addTask } = useGlobalContext();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
