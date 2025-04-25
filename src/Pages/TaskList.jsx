@@ -47,20 +47,22 @@ const TaskList = () => {
       task.title.toLowerCase().includes(debouncedQuery.toLowerCase())
     );
     return filteredTasks.sort((a, b) => {
-      if (sortBy === "title") {
+      switch (sortBy) {
+      case "title":
         return a.title.localeCompare(b.title) * sortOrder;
-      } else if (sortBy === "status") {
+      case "status":
         const status = ["To do", "Doing", "Done"];
         return (
-          (status.indexOf(a.status) - status.indexOf(b.status)) * sortOrder
+        (status.indexOf(a.status) - status.indexOf(b.status)) * sortOrder
         );
-      } else if (sortBy === "createdAt") {
+      case "createdAt":
         return (
-          (new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()) *
-          sortOrder
+        (new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()) *
+        sortOrder
         );
+      default:
+        return 0;
       }
-      return 0;
     });
   }, [tasks, sortBy, sortOrder, debouncedQuery]);
 
